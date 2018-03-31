@@ -31,7 +31,7 @@ def eraseItem(m_key):
     return    
         
         
-def insertOrUpdate(m_key, m_price , m_quantity, m_timee , m_location):
+def insertOrUpdate(m_key, m_price , m_quantity, m_timee ):
     
     dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
     table = dynamodb.Table('Swipes') # table 
@@ -63,7 +63,7 @@ def insertOrUpdate(m_key, m_price , m_quantity, m_timee , m_location):
     #inserting the new item with the new items
     response = table.put_item(
        Item={
-            'Location': m_location + convertedNumItems,
+            'Location': m_key + convertedNumItems,
             'info': {
                 'price': m_price,
                 'quantity': m_quantity,
@@ -123,7 +123,6 @@ def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
     response = table.query(
        FilterExpression=Attr('info.timee').contains(m_timee),  #can use this for filtering strings
         FilterExpression=Attr('info.price').eq(m_price),
-        FilterExpression=Attr('info.quantity').eq(m_quantity),
         KeyConditionExpression=Key('Location').eq(m_key) 
     )
     
@@ -143,4 +142,4 @@ def main():
     #getItem("Bplato12")
     #query("Bplato12")
 
-main()
+    main()
