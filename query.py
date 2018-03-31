@@ -3,7 +3,6 @@ import boto3
 import json
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
-from botocore.exceptions import ClientError
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -15,19 +14,16 @@ class DecimalEncoder(json.JSONEncoder):
                 return int(o)
         return super(DecimalEncoder, self).default(o)
 
-dynamodb = boto3.resource("dynamodb", region_name='us-west-1')
+dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
 
 table = dynamodb.Table('Swipes')
 
-try:
-    response = table.get_item(
-        Key={
-            'Location':"totalCount"
-        }
-    )
-except ClientError as e:
-    print(e.response['Error']['Message'])
-else:
-    item = response['Item']
-    print("GetItem succeeded:")
-    print(json.dumps(item, indent=4, cls=DecimalEncoder))
+
+response = table.query(
+   #FilterExpression=Attr('info.timee').contains("3"),  #can use this for filtering strings
+    #FilterExpression=Attr('info.price').eq(4),
+    KeyConditionExpression=Key('Location').eq("totalCount") 
+)
+
+for i in response['Items']:
+    print(i['count'])
