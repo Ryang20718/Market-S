@@ -5,6 +5,38 @@ import json
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
 
+
+def create_table():
+    dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
+    
+    
+    table = dynamodb.create_table(
+        TableName='Swipes',
+        KeySchema=[
+            {
+                'AttributeName': 'Location',
+                'KeyType': 'HASH'  #Partition key
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'Location',
+                'AttributeType': 'S'
+            },
+    
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 10,
+            'WriteCapacityUnits': 10
+        }
+    )
+    
+    print("Table status:", table.table_status)
+    return
+
+
+
+
 # Helper class to convert a DynamoDB item to JSON.
 def eraseItem(m_key):
     dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
