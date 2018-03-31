@@ -136,9 +136,9 @@ def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
 
 #MAIN
 def main():
-    #insertOrUpdate("Bplato",5,1,"3-9","Bplato")
+    insertOrUpdate("Bplato", 8 , 4, "3-6" )
     #eraseItem("Bplato11")
     #getItem("Bplato12")
     #query("Bplato12")
 
-    main()
+main()
