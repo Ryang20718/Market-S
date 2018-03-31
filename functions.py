@@ -121,9 +121,8 @@ def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
     
     
     response = table.query(
-       FilterExpression=Attr('info.timee').contains(m_timee),  #can use this for filtering strings
-        FilterExpression=Attr('info.price').eq(m_price),
-        KeyConditionExpression=Key('Location').eq(m_key) 
+       FilterExpression=Attr('info.timee').contains(m_timee) & Attr('info.price').eq(m_price) & Attr('info.quantity').eq(m_quantity),  #can use this for filtering strings
+       KeyConditionExpression=Key('Location').eq(m_key) 
     )
     
     for i in response['Items']:
