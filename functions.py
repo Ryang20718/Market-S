@@ -63,7 +63,7 @@ def eraseItem(m_key):
     return    
         
         
-def insertOrUpdate(m_key, m_price , m_quantity, m_early, m_late):
+def insertOrUpdate(m_key, m_price , m_quantity, m_early, m_late, m_phone):
     
     dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
     table = dynamodb.Table('Swipes') # table 
@@ -100,7 +100,8 @@ def insertOrUpdate(m_key, m_price , m_quantity, m_early, m_late):
                 'price': m_price,
                 'quantity': m_quantity,
                 'early': m_early,
-                'late': m_late
+                'late': m_late,
+                'phoneNum': m_phone
             }
         }
     )
@@ -144,7 +145,7 @@ def queryByKey(m_key):
     for i in response['Items']:
         check = i['Location']
         if not check.find(m_key):
-            list.append(check)
+            list.append(i)
     return list   
         
         
@@ -157,13 +158,13 @@ def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
     
     
     response = table.scan(
-    FilterExpression= Attr('info.early').lte(m_timee) & Attr('info.late').gte(m_timee)  & Attr('info.price').eq(m_price) & Attr('info.quantity').eq(m_quantity)
+    FilterExpression= Attr('info.early').lte(m_timee) & Attr('info.late').gte(m_timee)  & Attr('info.price').lte(m_price) & Attr('info.quantity').gte(m_quantity)
     )
     
     for i in response['Items']:
         check = i['Location']
         if not check.find(m_key):
-            list.append(check)
+            list.append(i)
     return list  
 
 
@@ -181,7 +182,7 @@ def scan(m_key):
     for i in response['Items']:
         check = i['Location']
         if not check.find(m_key):
-            list.append(check)
+            list.append(i)
     return list
 
 
@@ -198,5 +199,6 @@ def main():
     #print(scan("Bplato"))
     #insertOrUpdate("Bplato", 20 , 20, 3, 4)
     #print(queryByAttributes("Bplato",20,3,20))
-
+    #insertOrUpdate("Bplato", 8 , 4, 4, 6, "7605555555")
+    print (queryByAttributes("Bplato", 9, 5, 4))
 main()
