@@ -192,7 +192,7 @@ def scan(m_key):
 
 
 
-def twilioPhone(buyerNum, sellerNum):
+def twilioPhone(buyerNum, sellerNum):# Twilio Phone Number SMS
     account_sid = "AC94e44335f7486bdfba3be0cff727eb23"
     auth_token = "204dc04075eaa9831526661843dbdbea"
     
