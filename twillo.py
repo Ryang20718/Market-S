@@ -9,6 +9,6 @@ auth_token = "204dc04075eaa9831526661843dbdbea"
 client = Client(account_sid, auth_token)
 
 client.api.account.messages.create(
-    to="+17609252538",
+    to="+17604988288",
     from_="+14427776565",
-    body="Hello there!")
+    body="Hello from the other side")

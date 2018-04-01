@@ -63,7 +63,7 @@ def eraseItem(m_key):
     return    
         
         
-def insertOrUpdate(m_key, m_price , m_quantity, m_timee ):
+def insertOrUpdate(m_key, m_price , m_quantity, m_early, m_late):
     
     dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
     table = dynamodb.Table('Swipes') # table 
@@ -99,7 +99,8 @@ def insertOrUpdate(m_key, m_price , m_quantity, m_timee ):
             'info': {
                 'price': m_price,
                 'quantity': m_quantity,
-                'timee': m_timee
+                'early': m_early,
+                'late': m_late
             }
         }
     )
@@ -134,16 +135,17 @@ def queryByKey(m_key):
     
     table = dynamodb.Table('Swipes')
     
+    list = []
+    
     
     response = table.query(
-       #FilterExpression=Attr('info.timee').contains("3"),  #can use this for filtering strings
-        #FilterExpression=Attr('info.price').eq(4),
-        KeyConditionExpression=Key('Location').eq(m_key) 
     )
     
     for i in response['Items']:
-        print(i['info'])
-    return    
+        check = i['Location']
+        if not check.find(m_key):
+            list.append(check)
+    return list   
         
         
 def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
@@ -151,15 +153,36 @@ def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
     
     table = dynamodb.Table('Swipes')
     
+    list = []
     
-    response = table.query(
-       FilterExpression=Attr('info.timee').contains(m_timee) & Attr('info.price').eq(m_price) & Attr('info.quantity').eq(m_quantity),  #can use this for filtering strings
-       KeyConditionExpression=Key('Location').eq(m_key) 
+    
+    response = table.scan(
+    FilterExpression= Attr('info.early').lte(m_timee) & Attr('info.late').gte(m_timee)  & Attr('info.price').eq(m_price) & Attr('info.quantity').eq(m_quantity)
     )
     
     for i in response['Items']:
-        print(i['info'])
+        check = i['Location']
+        if not check.find(m_key):
+            list.append(check)
+    return list  
 
+
+def scan(m_key):
+    dynamodb = boto3.resource('dynamodb', region_name='us-west-1')
+    
+    table = dynamodb.Table('Swipes')
+    
+    list = [] 
+    
+    response = table.scan(
+
+        )
+    
+    for i in response['Items']:
+        check = i['Location']
+        if not check.find(m_key):
+            list.append(check)
+    return list
 
 
 
@@ -168,9 +191,12 @@ def queryByAttributes(m_key, m_price, m_timee, m_quantity):#query by attributes
 
 #MAIN
 def main():
-    insertOrUpdate("Bplato", 8 , 4, "3-6" )
+    #insertOrUpdate("Bplato", 8 , 4, "3-6" )
     #eraseItem("Bplato11")
     #getItem("Bplato12")
-    #query("Bplato12")
+    #print(queryByKey("B"))
+    #print(scan("Bplato"))
+    #insertOrUpdate("Bplato", 20 , 20, 3, 4)
+    print(queryByAttributes("Bplato",20,3,20))
 
 main()
