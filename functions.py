@@ -197,6 +197,6 @@ def main():
     #print(queryByKey("B"))
     #print(scan("Bplato"))
     #insertOrUpdate("Bplato", 20 , 20, 3, 4)
-    print(queryByAttributes("Bplato",20,3,20))
+    #print(queryByAttributes("Bplato",20,3,20))
 
 main()
