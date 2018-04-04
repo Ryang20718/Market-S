@@ -1,2 +1,2 @@
-Database Created using AWS Web Services
+DynamoDB NoSQL Database Created using AWS Web Services 
 
