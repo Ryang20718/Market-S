@@ -1,2 +1,4 @@
-DynamoDB NoSQL Database Created using AWS Web Services 
+#Market-Swipe
+
+DynamoDB NoSQL Database Created using Amazon Dynamo DB. Used in Market Swipe
 
